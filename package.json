@@ -1,6 +1,6 @@
 {
   "name": "publisher-subscriber",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "index.js",
   "scripts": {
