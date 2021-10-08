@@ -1,0 +1,6 @@
+handler:
+  - require-configuration-import:
+      action: process
+      mapAttributes:
+        container: data.container
+        path: data.entry.path
