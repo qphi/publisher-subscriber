@@ -8,7 +8,13 @@ import {findSubscriptionByRoleAndComponentId, ROLE} from "../helper/subscription
 
 let salt = 0;
 
+/**
+ * Define instance that can handle notification from publisher
+ */
 class Subscriber extends SubscriptionManager implements SubscriberInterface {
+    /**
+     * @inheritDoc
+     */
     unsubscribeFromSubscriptionId(subscriptionId: string): void {
         const subscription = this.findSubscriptionById(subscriptionId);
 
@@ -19,7 +25,9 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         subscription.unsubscribe();
     }
 
-
+    /**
+     * @inheritDoc
+     */
     findSubscriptionByPublisherId(publisherId: string): SubscriptionInterface[] {
         return findSubscriptionByRoleAndComponentId(
             this,
@@ -28,6 +36,9 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     unsubscribeFromPublisherId(publisherId: string): void {
         const subscriptions = this.findSubscriptionByPublisherId(publisherId);
 
@@ -37,6 +48,9 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     unsubscribeFromNotification(notification: string): void {
         const subscriptions = this.findSubscriptionsByNotification(notification);
         const unsubscribesCallback = subscriptions.map(subscription => subscription.unsubscribe);
@@ -45,6 +59,9 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     subscribe(publisher: PublisherInterface, notification: string, handler: Function): void {
         const nbSubscriptions = this.getNbSubscriptions();
         const subscription_id =  `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
@@ -64,14 +81,23 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         publisher.addSubscriber(notification, subscription);
     }
 
+    /**
+     * @inheritDoc
+     */
     getNbSubscriptions(): number {
         return this.nbSubscriptionRecorded;
     }
 
+    /**
+     * @inheritDoc
+     */
     removeSubscription(subscription_id: string): void {
         this.clearSubscription(subscription_id);
     }
 
+    /**
+     * @inheritDoc
+     */
     waitUntil(notifications: Array<NotificationRecord>): Promise<Array<any>> {
         const dedicatedSubSubscriber = new Subscriber(`wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`);
         return new Promise((resolve: Function) => {
@@ -96,6 +122,9 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     findSubscriptionsByNotificationAndPublisherId(notification: string, publisherId: string): SubscriptionInterface[] {
         const subscriptions = this.findSubscriptionsByNotification(notification);
 
