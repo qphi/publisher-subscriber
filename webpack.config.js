@@ -7,9 +7,9 @@ module.exports = {
         filename: "publisher-subscriber.min.js",
         library: {
             name: 'PubSub',
-            type: "umd",
-            umdNamedDefine: true
-        }
+            type: "umd"
+        },
+        globalObject: "this"
     },
 
     resolve: {
