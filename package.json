@@ -1,6 +1,6 @@
 {
-  "name": "publisher-subscriber",
-  "version": "1.0.3",
+  "name": "@qphi/publisher-subscriber",
+  "version": "1.0.4",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "dist/publisher-subscriber.min.js",
   "scripts": {
@@ -33,9 +33,13 @@
     "webpack-cli": "^4.7.2"
   },
   "author": "quentin.philippot",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/qphi/publisher-subscriber/issues"
   },
-  "homepage": "https://github.com/qphi/publisher-subscriber#readme"
+  "homepage": "https://github.com/qphi/publisher-subscriber#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  }
 }

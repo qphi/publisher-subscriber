@@ -3,6 +3,7 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "allowUmdGlobalAccess": true,
+    "sourceMap": true,
     "module": "commonjs",
     "target": "es2020",
     "strictNullChecks": true
