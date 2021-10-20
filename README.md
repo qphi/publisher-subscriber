@@ -33,10 +33,8 @@
       </ul>
     </li>
     <li><a href="#documentation">Documentation</a></li>
-    <li><a href="#why">Why</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -45,7 +43,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-```qphi/publisher-subscriber``` is a module built with Typescript as UMD module. It aims to implement most event / messaging patterns in your js or ts projects.
+```@qphi/publisher-subscriber``` is a module built with Typescript as UMD module. It aims to implement most event / messaging patterns in your js or ts projects.
 
 This module provide two main interfaces:``PublisherInterface`` and ``SubscriberInterface`` that describe how your vanilla object could share **notification** in order be reactive and work together.
 
@@ -67,7 +65,7 @@ That's all! Now you can start to play with the notification system!
 ### Send your first notification 🚀
 
 ```js
-import {Publisher, Subscriber} from "qhi/publisher-subscriber";
+import {Publisher, Subscriber} from "@qphi/publisher-subscriber";
 
 const publisher = new Publisher('publisher-id');
 const subscriber = new Subscriber('subscriber-id');
@@ -84,7 +82,7 @@ publisher.publish('notification-string-example');
 ### Send parameters on publish 
 
 ```js
-import {Publisher, Subscriber} from "qhi/publisher-subscriber";
+import {Publisher, Subscriber} from "@qphi/publisher-subscriber";
 
 const publisher = new Publisher('Paul');
 const subscriber = new Subscriber('bar');
@@ -103,7 +101,7 @@ An instance of ``PublisherSubscriber`` implements ``PublisherInterface`` and ``S
 
 This kind of instance is helpful when you have to manage several components or implements a workflow.
 ```js
-import { PublisherSubscriber } from "qhi/publisher-subscriber";
+import { PublisherSubscriber } from "@qphi/publisher-subscriber";
 
 const worker = new PublisherSubscriber('worker');
 const manager = new PublisherSubscriber('manager');
@@ -151,10 +149,9 @@ TODO
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Add some tutorial in order to show how this module is amazing 🎉
-- [] Implement a priority system
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+See the [roadmap](https://github.com/qphi/publisher-subscriber/projects) for a full list features already planed.<br>
+See the [issues](https://github.com/qphi/publisher-subscriber/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -167,46 +164,11 @@ Distributed under the GPL License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Quentin Philippot - qphi-developper@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+Project Link: [https://github.com/qphi/publisher-subscriber](https://github.com/qphi/publisher-subscriber)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
