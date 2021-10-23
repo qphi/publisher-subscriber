@@ -47,11 +47,11 @@
 
 This module provide two main interfaces:``PublisherInterface`` and ``SubscriberInterface`` that describe how your vanilla object could share **notification** in order be reactive and work together.
 
-<i><u>Note that it is not an academical **pubsub pattern**</u></i>.
+👉 <i><u>Note that it is not an academical **pubsub pattern**</u></i>.
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Getting Started 🚀
 
 ### Prerequisites
 
@@ -62,7 +62,7 @@ This module provide two main interfaces:``PublisherInterface`` and ``SubscriberI
 
 That's all! Now you can start to play with the notification system!
 
-### Send your first notification 🚀
+### Send your first notification
 
 ```js
 import {Publisher, Subscriber} from "@qphi/publisher-subscriber";
