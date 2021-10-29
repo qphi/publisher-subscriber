@@ -1,6 +1,13 @@
 - Getting started
 - Concept
-  - [📖 Ubiquitous Lanaguage](ubiquitous-language.md)
+  - [📖 Ubiquitous Lanaguage](concept/ubiquitous-language.md)
+  - [Philosophy](concept/philosophy.md)
+- Communication In-Depth
+  - [Publication](documentation/publication.md)
+  - [Best Practices](documentation/best-practices.md)
 - Managing subscription
   - [Find subscription](documentation/find-subscription.md)
   - [Remove subscription](documentation/remove-subscribption.md)
+- Cookbook
+  - [Pattern in a nutshell](cookbook/pattern-in-nutshell.md)
+  

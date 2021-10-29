@@ -31,3 +31,34 @@ Contract between publisher and subscriber for a given notification. A subscripti
 
 **implementation detail**:
 * `SubscriptionInterface` describe this data structure.
+
+## Component
+
+Generic term that refers to any instance that can be subscriber, publisher, or both.
+
+## Workflow
+
+Complex behavior that can **emerge** from chained publication.
+
+Example:
+
+```ts
+a.subscribe('first-step', root, () => {
+    // ...
+    a.publish('second-step');
+});
+
+b.subscribe('second-step', a, () => {
+    // ...
+    b.publish('third-step');
+});
+
+c.subscribe('third-step', c, () => {
+    // ...
+    // end of workflow
+});
+
+root.publish('firt-step');
+```
+
+Here, we can refers to behavior involved by ``first-step``,``second-step`` and ``third-step`` as a *workflow*.
