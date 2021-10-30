@@ -14,7 +14,7 @@ It is possible to implement this communication scheme using ``@qphi/publisher-su
 * `pubs` are object that can interact with *topic*
 * `topic` is a **publisher**
 
-```ts
+```js
 import {Publisher, Subscriber} from "./index";
 
 class Sub extends Subscriber {};

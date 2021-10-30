@@ -15,7 +15,7 @@ Assume that you want to remove all subscription from that matches with a specifi
 <br/>
 <br/>
 If subscriber has subscribed with this notification to several publishers all subscription will be removed.
-```ts
+```js
 subscriber.subscribe(publisherA, 'some-notification', () => { /* ... */ });
 subscriber.subscribe(publisherB, 'some-notification', () => { /* ... */ });
 // ...
@@ -30,7 +30,7 @@ console.log(subscriber.findSubscriptionsByNotification('some-notification'));
 
 It removes all subscription between a subscriber and a publisher.
 
-```ts
+```js
 subscriber.subscribe(publisher, 'some-notification', () => { /* ... */ });
 subscriber.subscribe(publisher, 'other-notification', () => { /* ... */ });
 
@@ -45,7 +45,7 @@ unsubscribeFromPublisherId
 ## Using subscription id
 
 In case you know directly the subscription id, you can directly unsubscribe using `unsubscribeFromSubscriptionId`.
-```ts
+```js
 const subscriptionId:string = 'your subscription id';
 subscriber.unsubscribeFromSubscriptionId(subscriptionId);
 ```
@@ -54,7 +54,7 @@ subscriber.unsubscribeFromSubscriptionId(subscriptionId);
 
 One way to remove all subscriptions from a publisher or subscriber is call ``destroy()`` method. This method should be call each time a publisher or subscriber should be killed. (#see best practices).
 
-```ts
+```js
 // do subscription stuff
 subscriber.subscribe(/* ... */);
 

@@ -76,6 +76,10 @@ subscriber.subscribe(publisher, 'notification-string-example', () => {
 
 publisher.publish('notification-string-example');
 // => "Hello world! I am an happy handler!"
+
+// clear your component properly
+publisher.destroy();
+subscriber.destroy();
 ```
 
 
@@ -93,6 +97,10 @@ subscriber.subscribe(publisher, 'hi', name => {
 
 publisher.publish('hi', publisher.getId());
 // => "Hi, my name is Paul! Nice to meet you!"
+
+// clear your component properly
+publisher.destroy();
+subscriber.destroy();
 ```
 
 ### Combine Publisher and Subscriber roles 
@@ -123,23 +131,10 @@ manager.publish('new-mission-available', 'foo');
 // => worker: "manager" ask somebody to do the job "foo".
 // => worker: job "foo" id done.
 // => manager: "worker" notice me that job "foo" was done.
-```
 
-### Best Practices
-
-#### Kill your component properly
-Cause a subscription might keep a references to some object (according to the handler), memory leak could occur if you didn't clear properly subscriptions. That's why we advise to manually call ``destroy`` method under a ``publisher`` or a ``subscriber`` as soon as you know that it won't be used anymore. In some context, it is not critical cause your instance will automatically be cleared (browser context reset by new navigation). 
-  
-#### Avoid publish in handler, unless you implements PublisherSubscriberInterface
-In subscription handler you should not let another publisher publish a new notification. Unless ``subscriber``implements ``PublisherSubscriberInterface`` avoid to publishing in handler at all. 
-```js
-// Naive example of stack-overflow 
-// In real world it could be happen when a subscriber handler involve another publication
-subscriber.subscribe(publisher, 'hello', () => {
-    publisher.publish('hello');    
-});
-
-publisher.publish('hello'); 
+// clear your component properly
+manager.destroy();
+worker.destroy();
 ```
 <!-- DOCUMENTAION -->
 ## Documentation

@@ -42,7 +42,7 @@ Complex behavior that can **emerge** from chained publication.
 
 Example:
 
-```ts
+```js
 a.subscribe('first-step', root, () => {
     // ...
     a.publish('second-step');
@@ -61,4 +61,4 @@ c.subscribe('third-step', c, () => {
 root.publish('firt-step');
 ```
 
-Here, we can refers to behavior involved by ``first-step``,``second-step`` and ``third-step`` as a *workflow*.
+Here, we can refer to behavior involved by ``first-step``,``second-step`` and ``third-step`` as a *workflow*.

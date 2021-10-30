@@ -1,13 +1,22 @@
-- Getting started
+- [Getting started](Getting%20started/quick-start.md)
 - Concept
   - [📖 Ubiquitous Lanaguage](concept/ubiquitous-language.md)
-  - [Philosophy](concept/philosophy.md)
+  - [🧙 Philosophy](concept/philosophy.md)
 - Communication In-Depth
   - [Publication](documentation/publication.md)
-  - [Best Practices](documentation/best-practices.md)
+    - [- Synchronous First](documentation/publication.md#synchronous-first)
+    - [- Build Asynchronous Workflow](documentation/publication.md#build-asynchronous-workflow)
+    - [- Deal With Errors](documentation/publication.md#deal-with-errors)
 - Managing subscription
-  - [Find subscription](documentation/find-subscription.md)
-  - [Remove subscription](documentation/remove-subscribption.md)
+  - [Find Subscription](documentation/find-subscription.md)
+  - [Remove Subscription](documentation/remove-subscribption.md)
+- Best Practices
+  - [Always clear your component properly](documentation/best-practices.md#always-clear-your-component-properly)
+  - [Dont Speak For Others](documentation/best-practices.md#dont-speak-for-others)
 - Cookbook
-  - [Pattern in a nutshell](cookbook/pattern-in-nutshell.md)
+  - Pattern in a nutshell
+    - [- Observer](cookbook/observer.md)
+    - [- Pub/Sub](cookbook/pub-sub.md)
+  - [Voter System](cookbook/voter-system.md)
+  - [Multi Agent System](cookbook/multi-agent-system.md)
   

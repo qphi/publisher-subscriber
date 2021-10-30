@@ -10,7 +10,7 @@ It is possible to implement this communication scheme using ``@qphi/publisher-su
 * `subject` are **subscriber**
 * `observable` are **publisher**
 
-```ts
+```js
 import {Publisher, Subscriber} from "./index";
 
 class Subject extends Publisher {
@@ -46,7 +46,7 @@ subject.notify();
 
 Or directly
 
-```ts
+```js
 import {Subscriber, Publisher} from "./index";
 
 const observer = new Subscriber('observer');
