@@ -1,22 +1,22 @@
 # 📖 Ubiquitous Language
 
-In order to describe how `@qphi/publisher-subscriber` works, some words with a strong semantic will be used. This section provide the right meaning of each word for the followings documentations. 
+In order to describe how `@qphi/publisher-subscriber` works, some words with strong semantic will be used. This section provide the right meaning of each words for the following documentations. 
 
 ## Subscriber
-Instances that can subscribe to any *notifcation* from *publisher*. Subscriber is one of the two roles actually available in this communication pattern.
+Instances that can subscribe to any *notifcation* from *publisher*. Subscriber is one of the two roles currently available in this communication pattern.
 <br/>
 <br/>
-**implementation detail**: 
+**Implementation detail**: 
 * `SubscriberInterface` and `PublisherSubscriberInterface` describe this role.
-* `Subscriber` and `PublisherSubscriber` class implements this behavior.
+* `Subscriber` and `PublisherSubscriber` class implement this behavior.
 
 ## Publisher
-Instances that can publish any *notifcation* to *subscriber*. Publisher is one of the two roles actually available in this communication pattern.
+Instances that can publish any *notifcation* to *subscriber*. Publisher is one of the two roles currently available in this communication pattern.
 <br/>
 <br/>
 **implementation detail**:
 * `PublisherInterface` and `PublisherSubscriberInterface` describe this role.
-* `Publisher` and `PublisherSubscriber` class implements this behavior.
+* `Publisher` and `PublisherSubscriber` class implement this behavior.
 
 ## Notification
 
@@ -27,7 +27,7 @@ Is the name given to the message published by publisher. When a subscriber subsc
 
 ## Subscription
 
-Contract between publisher and subscriber for a given notification. A subscription item contains a handler whose is trigger each time publisher publish the related notification.
+Contract between publisher and subscriber for a given notification. A subscription item contains a handler which is trigger each time publisher publish the related notification.
 
 **implementation detail**:
 * `SubscriptionInterface` describe this data structure.

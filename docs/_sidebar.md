@@ -1,6 +1,6 @@
 - [Getting started](Getting%20started/quick-start.md)
 - Concept
-  - [📖 Ubiquitous Lanaguage](concept/ubiquitous-language.md)
+  - [📖 Ubiquitous Language](concept/ubiquitous-language.md)
   - [🧙 Philosophy](concept/philosophy.md)
 - Communication In-Depth
   - [Publication](documentation/publication.md)
