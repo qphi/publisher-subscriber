@@ -8,7 +8,7 @@ Instances that can subscribe to any *notifcation* from *publisher*. Subscriber i
 <br/>
 **Implementation detail**: 
 * `SubscriberInterface` and `PublisherSubscriberInterface` describe this role.
-* `Subscriber` and `PublisherSubscriber` class implement this behavior.
+* `Subscriber` and `PublisherSubscriber` classes implement this behavior.
 
 ## Publisher
 Instances that can publish any *notifcation* to *subscriber*. Publisher is one of the two roles currently available in this communication pattern.
@@ -16,7 +16,7 @@ Instances that can publish any *notifcation* to *subscriber*. Publisher is one o
 <br/>
 **implementation detail**:
 * `PublisherInterface` and `PublisherSubscriberInterface` describe this role.
-* `Publisher` and `PublisherSubscriber` class implement this behavior.
+* `Publisher` and `PublisherSubscriber` classes implement this behavior.
 
 ## Notification
 
