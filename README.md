@@ -6,8 +6,6 @@
       Let your vanilla components work together by publishing or subscribing notifications!
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
     <a href="https://github.com/qphi/publisher-subscriber/issues">Report Bug</a>
     ·
     <a href="https://github.com/qphi/publisher-subscriber/issues">Request Feature</a>
