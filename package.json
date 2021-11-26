@@ -1,10 +1,11 @@
 {
   "name": "@qphi/publisher-subscriber",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "dist/publisher-subscriber.min.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/*.spec.ts",
+    "test": "mocha -r ts-node/register tests/*.spec.ts",
+    "lint": "eslint . --ext .ts",
     "build": "webpack"
   },
   "repository": {
@@ -23,8 +24,11 @@
     "@types/chai": "4.2.11",
     "@types/mocha": "7.0.2",
     "@types/node": "13.11.1",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "babel-loader": "^8.2.2",
     "chai": "4.2.0",
+    "eslint": "^8.3.0",
     "mocha": "^9.1.2",
     "nyc": "^15.1.0",
     "ts-loader": "^9.2.3",

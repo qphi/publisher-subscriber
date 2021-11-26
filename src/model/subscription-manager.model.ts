@@ -19,22 +19,21 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
     /**
      * @inheritDoc
      */
-    getSubscriptions(): SubscriptionInterface[] {
-        // flatten all subscriptions
-        return [].concat.apply([], Object.values(this.notificationsCollection))
+    public getSubscriptions(): SubscriptionInterface[] {
+        return ([] as SubscriptionInterface[]).concat.apply([], Object.values(this.notificationsCollection))
     }
 
     /**
      * @inheritDoc
      */
-    getNbSubscriptions(): number {
+    public getNbSubscriptions(): number {
         return this.nbSubscriptionRecorded;
     }
 
     /**
      * @inheritDoc
      */
-    hasSubscription(subscriptionId: string): boolean {
+    public hasSubscription(subscriptionId: string): boolean {
         return typeof this.subscriptionsList[subscriptionId] !== 'undefined';
     }
 
@@ -43,14 +42,14 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
      * @param subscriptionId - subscription id
      * @param notification - notification name
      */
-    recordSubscription(subscriptionId: string, notification: string): void {
+    public recordSubscription(subscriptionId: string, notification: string): void {
         this.subscriptionsList[subscriptionId] = notification;
     }
 
 
     private findSubscriptionIndexById(subscriptionId: string): {index: number, notification: string } {
         const notificationName = this.subscriptionsList[subscriptionId];
-        let subscriptionIndex = {
+        const subscriptionIndex = {
             index: -1,
             notification: notificationName ?? ''
         };
@@ -76,7 +75,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
     /**
      * @inheritDoc
      */
-    findSubscriptionById(subscriptionId: string): SubscriptionInterface | null {
+    public findSubscriptionById(subscriptionId: string): SubscriptionInterface | null {
         const subscriptionIndex = this.findSubscriptionIndexById(subscriptionId);
 
         if (subscriptionIndex.index < 0) {
@@ -91,7 +90,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
     /**
      * @inheritDoc
      */
-    findSubscriptionsByNotification(notification: string): Array<SubscriptionInterface> {
+    public findSubscriptionsByNotification(notification: string): Array<SubscriptionInterface> {
         return this.notificationsCollection[notification] || [];
     }
 
@@ -118,6 +117,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
             // // by deleting reference to this function, all reference into function will be destroyed
             // // it could prevent some memory leaks
             if (typeof removedSubscription.handler === 'function') {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 delete removedSubscription.handler;
             }
@@ -137,7 +137,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
      * @param subscription
      * @throws SubscriptionAlreadyExistsException - when a subscription with same id was already added
      */
-    addSubscription(notification: string, subscription: SubscriptionInterface): void {
+    public addSubscription(notification: string, subscription: SubscriptionInterface): void {
         if (Array.isArray(this.notificationsCollection[notification]) !== true) {
             this.notificationsCollection[notification] = [];
         }
@@ -156,21 +156,21 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
     /**
      * @inheritDoc
      */
-    getId(): string {
+    public getId(): string {
         return this.id;
     }
 
     /**
      * @inheritDoc
      */
-    is(id: string): boolean {
+    public is(id: string): boolean {
         return id === this.getId();
     }
 
     /**
      * Clear all subscriptions properly
      */
-    destroy(): void {
+    public destroy(): void {
         Object.values(this.notificationsCollection).forEach(subscriptionsType => {
             subscriptionsType.forEach(
                 (subscription: SubscriptionInterface) => subscription.unsubscribe()

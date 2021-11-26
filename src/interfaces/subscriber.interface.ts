@@ -13,7 +13,7 @@ interface SubscriberInterface extends SubscriptionManagerInterface {
      * @param notification - notification whose trigger subscription handler
      * @param handler - callback to handle when publisher publish the right notification
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: Function):void
+    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void):void
 
     /**
      * Remove a subscription by id
