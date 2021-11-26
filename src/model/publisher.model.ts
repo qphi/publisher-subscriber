@@ -35,8 +35,7 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
                 (subscription: SubscriptionInterface) => {
                     try {
                         subscription.handler(data);
-                    }
-                    catch (error) {
+                    } catch (error) {
                         if (this.shouldIStopPublicationOnException) {
                             throw error;
                         }

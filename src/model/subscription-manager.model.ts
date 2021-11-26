@@ -47,7 +47,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
     }
 
 
-    private findSubscriptionIndexById(subscriptionId: string): {index: number, notification: string } {
+    private findSubscriptionIndexById(subscriptionId: string): { index: number, notification: string } {
         const notificationName = this.subscriptionsList[subscriptionId];
         const subscriptionIndex = {
             index: -1,
@@ -64,7 +64,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
         if (Array.isArray(notifications)) {
             subscriptionIndex.index = notifications.findIndex(
                 (recordedSubscription: SubscriptionInterface) => {
-                    return recordedSubscription.id = subscriptionId;
+                    return recordedSubscription.id === subscriptionId;
                 }
             );
         }
@@ -79,10 +79,8 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
         const subscriptionIndex = this.findSubscriptionIndexById(subscriptionId);
 
         if (subscriptionIndex.index < 0) {
-            return  null;
-        }
-
-        else {
+            return null;
+        } else {
             return this.notificationsCollection[subscriptionIndex.notification][subscriptionIndex.index];
         }
     }
@@ -100,13 +98,12 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
      * @throws SubscriptionNotFoundException - when subscription was not found
      * @protected
      */
-    protected clearSubscription(subscriptionId: string):void {
+    protected clearSubscription(subscriptionId: string): void {
         const subscriptionIndex = this.findSubscriptionIndexById(subscriptionId);
 
         if (subscriptionIndex.index < 0) {
             throw new SubscriptionNotFoundException(subscriptionId, this.getId());
-        }
-        else {
+        } else {
             const notifications = this.notificationsCollection[subscriptionIndex.notification];
             const removedSubscription: SubscriptionInterface = notifications.splice(
                 subscriptionIndex.index,
@@ -146,9 +143,7 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
             this.notificationsCollection[notification].push(subscription);
             this.recordSubscription(subscription.id, notification);
             this.nbSubscriptionRecorded++;
-        }
-
-        else {
+        } else {
             throw new SubscriptionAlreadyExistsException(subscription.id, this.getId());
         }
     }

@@ -50,15 +50,12 @@ export function subscribeFromObject(
 
 
                         callback(parameters);
-                    }
-
-                    else {
+                    } else {
                         callback(data);
                     }
                 }
 
             )
         }
-
     });
 }

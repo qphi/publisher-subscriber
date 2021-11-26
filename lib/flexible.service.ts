@@ -1,4 +1,5 @@
 import MixedInterface from "./mixed.interface";
+import InvalidParameterException from "./invalid-parameter.exception";
 
 /**
  * Helper that allow to store or retrieve value from nested object using its `propertyPath`. Use `MixedInterface` as a properties tree.
@@ -22,7 +23,9 @@ class FlexibleService {
         for (let i = 0; i < tokens.length; i++) {
             const token = tokens[i];
             if (token.length === 0) {
-                throw `Invalid instance id`;
+                throw new InvalidParameterException(
+                    `"${propertyPath}" is not a valid property path.`
+                );
             }
 
             if (typeof node[token] === 'undefined') {
@@ -57,7 +60,9 @@ class FlexibleService {
             const token = tokens[i];
 
             if (token.length === 0) {
-                throw `Invalid instance id`;
+                throw new InvalidParameterException(
+                    `"${propertyPath}" is not a valid property path.`
+                );
             }
 
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
