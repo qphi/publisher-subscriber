@@ -3,6 +3,7 @@
   "version": "1.0.7",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "dist/publisher-subscriber.min.js",
+  "browserslist": ["> 0.25%", "not dead"],
   "scripts": {
     "test": "mocha -r ts-node/register tests/*.spec.ts",
     "lint": "eslint . --ext .ts",

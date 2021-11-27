@@ -23,6 +23,9 @@
     "@typescript-eslint/no-inferrable-types": "off"
   },
   "ignorePatterns": [
-    "*.spec.ts"
+    "package.json",
+    "*.spec.ts",
+    "*.spec.js",
+    "*.config.js"
   ]
 }
