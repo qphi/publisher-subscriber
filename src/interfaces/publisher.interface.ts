@@ -21,9 +21,9 @@ interface PublisherInterface extends SubscriptionManagerInterface {
 
     /**
      * Remove all subscriptions between publisher and the subscriber with id `subscription_id`
-     * @param subscription_id - id of a potential subscriber
+     * @param subscriptionId - id of a potential subscriber
      */
-    removeSubscriber(subscription_id: string): void;
+    removeSubscriber(subscriptionId: string): void;
 
     /**
      * Find all subscriptions between publisher and the subscriber with id `subscription_id`

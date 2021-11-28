@@ -13,25 +13,25 @@ interface SubscriberInterface extends SubscriptionManagerInterface {
      * @param notification - notification whose trigger subscription handler
      * @param handler - callback to handle when publisher publish the right notification
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void):void
+    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void
 
     /**
      * Remove a subscription by id
      * @param subscriptionId - subscription id
      */
-    unsubscribeFromSubscriptionId(subscriptionId: string):void;
+    unsubscribeFromSubscriptionId(subscriptionId: string): void;
 
     /**
      * Remove all subscription from a publisher
      * @param publisherId - publisher id
      */
-    unsubscribeFromPublisherId(publisherId: string):void;
+    unsubscribeFromPublisherId(publisherId: string): void;
 
     /**
      * Remove all subscription bind to the following notification name
      * @param notification - notification name
      */
-    unsubscribeFromNotification(notification: string):void;
+    unsubscribeFromNotification(notification: string): void;
 
     /**
      * Find all subscriptions from a publisher
@@ -50,14 +50,16 @@ interface SubscriberInterface extends SubscriptionManagerInterface {
      * @param notification - notification name
      * @param subscription
      */
-    addSubscription(notification: string, subscription: SubscriptionInterface):void;
+    addSubscription(notification: string, subscription: SubscriptionInterface): void;
 
     /**
-     * Remove subscription from subscriber's subscription list. Note that this method won't remove subscription to publisher's subscription list. That's why you shouldn't call it manually. To properly remove a subscription, prefer {@link unsubscribeFromSubscriptionId}
-     * @param subscription_id
+     * Remove subscription from subscriber's subscription list.
+     * Note that this method won't remove subscription to publisher's subscription list.
+     * That's why you shouldn't call it manually. To properly remove a subscription, prefer {@link unsubscribeFromSubscriptionId}
+     * @param subscriptionId
      * @internal
      */
-    removeSubscription(subscription_id: string):void;
+    removeSubscription(subscriptionId: string): void;
 
     /**
      * Wait until one or several notications are published. If only one notification publication is pending, it is equivalent to "subscribeOnce".

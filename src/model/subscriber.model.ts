@@ -64,15 +64,15 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
      */
     public subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void {
         const nbSubscriptions = this.getNbSubscriptions();
-        const subscription_id =  `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
+        const subscriptionId = `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
 
         const subscription: SubscriptionInterface = {
-            id: subscription_id,
+            id: subscriptionId,
             subscriber_id: this.getId(),
             publisher_id: publisher.getId(),
             unsubscribe: () => {
-                publisher.removeSubscriber(subscription_id);
-                this.removeSubscription(subscription_id);
+                publisher.removeSubscriber(subscriptionId);
+                this.removeSubscription(subscriptionId);
             },
             handler
         };
@@ -91,18 +91,20 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    public removeSubscription(subscription_id: string): void {
-        this.clearSubscription(subscription_id);
+    public removeSubscription(subscriptionId: string): void {
+        this.clearSubscription(subscriptionId);
     }
 
     /**
      * @inheritDoc
      */
     public waitUntil(notifications: Array<NotificationRecord>): Promise<Array<any>> {
-        const dedicatedSubSubscriber = new Subscriber(`wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`);
+        const dedicatedSubSubscriber = new Subscriber(
+            `wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`
+        );
         return new Promise((resolve) => {
             Promise.all(
-                notifications.map(notification  => {
+                notifications.map(notification => {
                     const promise: Promise<void> = new Promise((resolve1) => {
                         dedicatedSubSubscriber.subscribe(
                             notification.from,

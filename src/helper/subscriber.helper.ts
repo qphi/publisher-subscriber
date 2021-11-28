@@ -2,6 +2,7 @@ import FlexibleService from "../../lib/flexible.service";
 import MixedInterface from "../../lib/mixed.interface";
 import SubscriberInterface from "../interfaces/subscriber.interface";
 import PublisherInterface from "../interfaces/publisher.interface";
+
 const flexible = new FlexibleService();
 
 /**
@@ -39,7 +40,7 @@ export function subscribeFromObject(
                 (data: any) => {
                     const parameters: MixedInterface = {};
                     if (typeof subscription.mapAttributes !== 'undefined') {
-                        const mappage =  subscription.mapAttributes;
+                        const mappage = subscription.mapAttributes;
                         Object.keys(mappage).forEach(attributeName => {
                             const propertyToRetrieve: string = mappage[attributeName] ?? '';
                             parameters[attributeName] = flexible.get(
@@ -54,7 +55,6 @@ export function subscribeFromObject(
                         callback(data);
                     }
                 }
-
             )
         }
     });

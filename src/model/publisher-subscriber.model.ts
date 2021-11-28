@@ -42,8 +42,8 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
     /**
      * @inheritDoc
      */
-    public removeSubscriber(subscription_id: string): void {
-        this.publisher.removeSubscriber(subscription_id);
+    public removeSubscriber(subscriptionId: string): void {
+        this.publisher.removeSubscriber(subscriptionId);
     }
 
     /**
@@ -91,8 +91,8 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
     /**
      * @inheritDoc
      */
-    public removeSubscription(subscription_id: string): void {
-        this.subscriber.removeSubscription(subscription_id);
+    public removeSubscription(subscriptionId: string): void {
+        this.subscriber.removeSubscription(subscriptionId);
     }
 
     /**
