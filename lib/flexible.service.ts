@@ -13,7 +13,7 @@ class FlexibleService {
      * @param separator - separator in proprerty path. If separator equals to "#", the path "object#propA#propB" will be resolved as "object.propA.propB".
      * @throws Error - "Invalid instance id" if propertyPath is malformated (no string between two separators) aka "a.b..c"
      */
-    public set(propertyPath: string, value: any, instance: MixedInterface, separator:string = '.') {
+    public set(propertyPath: string, value: any, instance: MixedInterface, separator: string = '.') {
         const tokens = propertyPath.split(separator);
 
         let node: MixedInterface = instance;
@@ -51,7 +51,7 @@ class FlexibleService {
      * @throws Error - "Invalid instance id" if propertyPath is malformated (no string between two separators) aka "a.b..c"
      * @return {any | null}  if the following property was found, value is return, null instead
      */
-    public get(propertyPath: string, instance: object, separator: string = '.') : any | null {
+    public get(propertyPath: string, instance: object, separator: string = '.'): any | null {
         const tokens = propertyPath.split(separator);
 
         let node = instance;

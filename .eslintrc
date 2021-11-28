@@ -20,7 +20,8 @@
         }
       }
     ],
-    "@typescript-eslint/no-inferrable-types": "off"
+    "@typescript-eslint/no-inferrable-types": "off",
+    "eol-last": ["warn", "always"]
   },
   "ignorePatterns": [
     "package.json",
