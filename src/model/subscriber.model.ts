@@ -15,7 +15,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    unsubscribeFromSubscriptionId(subscriptionId: string): void {
+    public unsubscribeFromSubscriptionId(subscriptionId: string): void {
         const subscription = this.findSubscriptionById(subscriptionId);
 
         if (subscription === null) {
@@ -28,7 +28,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    findSubscriptionByPublisherId(publisherId: string): SubscriptionInterface[] {
+    public findSubscriptionByPublisherId(publisherId: string): SubscriptionInterface[] {
         return findSubscriptionByRoleAndComponentId(
             this,
             ROLE.PUBLISHER_ID,
@@ -39,7 +39,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    unsubscribeFromPublisherId(publisherId: string): void {
+    public unsubscribeFromPublisherId(publisherId: string): void {
         const subscriptions = this.findSubscriptionByPublisherId(publisherId);
 
         const unsubscribesCallback = subscriptions.map(subscription => subscription.unsubscribe);
@@ -51,7 +51,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    unsubscribeFromNotification(notification: string): void {
+    public unsubscribeFromNotification(notification: string): void {
         const subscriptions = this.findSubscriptionsByNotification(notification);
         const unsubscribesCallback = subscriptions.map(subscription => subscription.unsubscribe);
         unsubscribesCallback.forEach(callback => {
@@ -62,17 +62,17 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: Function): void {
+    public subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void {
         const nbSubscriptions = this.getNbSubscriptions();
-        const subscription_id =  `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
+        const subscriptionId = `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
 
         const subscription: SubscriptionInterface = {
-            id: subscription_id,
+            id: subscriptionId,
             subscriber_id: this.getId(),
             publisher_id: publisher.getId(),
             unsubscribe: () => {
-                publisher.removeSubscriber(subscription_id);
-                this.removeSubscription(subscription_id);
+                publisher.removeSubscriber(subscriptionId);
+                this.removeSubscription(subscriptionId);
             },
             handler
         };
@@ -84,26 +84,28 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    getNbSubscriptions(): number {
+    public override getNbSubscriptions(): number {
         return this.nbSubscriptionRecorded;
     }
 
     /**
      * @inheritDoc
      */
-    removeSubscription(subscription_id: string): void {
-        this.clearSubscription(subscription_id);
+    public removeSubscription(subscriptionId: string): void {
+        this.clearSubscription(subscriptionId);
     }
 
     /**
      * @inheritDoc
      */
-    waitUntil(notifications: Array<NotificationRecord>): Promise<Array<any>> {
-        const dedicatedSubSubscriber = new Subscriber(`wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`);
-        return new Promise((resolve: Function) => {
+    public waitUntil(notifications: Array<NotificationRecord>): Promise<Array<any>> {
+        const dedicatedSubSubscriber = new Subscriber(
+            `wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`
+        );
+        return new Promise((resolve) => {
             Promise.all(
-                notifications.map(notification  => {
-                    return new Promise((resolve1: Function) => {
+                notifications.map(notification => {
+                    const promise: Promise<void> = new Promise((resolve1) => {
                         dedicatedSubSubscriber.subscribe(
                             notification.from,
                             notification.name,
@@ -112,6 +114,8 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
                             }
                         );
                     });
+
+                    return promise;
                 })
             ).then((data: Array<any>) => {
                 // destroy to avoid memory leak with unused references to PublisherInterface from `notification.from`
@@ -125,7 +129,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    findSubscriptionsByNotificationAndPublisherId(notification: string, publisherId: string): SubscriptionInterface[] {
+    public findSubscriptionsByNotificationAndPublisherId(notification: string, publisherId: string): SubscriptionInterface[] {
         const subscriptions = this.findSubscriptionsByNotification(notification);
 
         return subscriptions.filter(subscription => {

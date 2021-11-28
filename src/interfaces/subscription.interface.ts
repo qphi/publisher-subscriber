@@ -7,10 +7,10 @@ interface SubscriptionInterface {
     subscriber_id: string;
 
     /** callback to trigger each time publisher publish the right notification */
-    handler: Function;
+    handler: (payload: any) => void;
 
     /** call it to properly remove a subscription */
-    unsubscribe: Function;
+    unsubscribe: () => void;
 }
 
 

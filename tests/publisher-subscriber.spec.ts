@@ -408,7 +408,6 @@ describe('PubSub test suite', () => {
             expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_pubsub_salt_1","subscriber_id":"pubsub","publisher_id":"pubsub"},{"id":"sub_pubsub_to_p2_salt_0","subscriber_id":"pubsub","publisher_id":"p2"}]');
         });
         it('return empty array if unknown subscriber_id is used with findSubscriptionBySubscriberId', () => {
-            const publisher = new Publisher('publisher');
             const pubsub = new PublisherSubscriber('pubsub');
 
             expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('nope'))).to.equals('[]');

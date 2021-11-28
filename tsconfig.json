@@ -6,7 +6,12 @@
     "sourceMap": true,
     "module": "commonjs",
     "target": "es2020",
-    "strictNullChecks": true
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitThis": true,
+    "strict": true
   },
   "exclude": [
     "node_modules"

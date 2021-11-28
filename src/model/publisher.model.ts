@@ -12,21 +12,21 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
     /**
      * @inheritDoc
      */
-    stopPublicationOnException(): void {
+    public stopPublicationOnException(): void {
         this.shouldIStopPublicationOnException = true;
     }
 
     /**
      * @inheritDoc
      */
-    continuePublicationOnException(): void {
+    public continuePublicationOnException(): void {
         this.shouldIStopPublicationOnException = false;
     }
 
     /**
      * @inheritDoc
      */
-    publish(notification: string, data?: any): void {
+    public publish(notification: string, data?: any): void {
         const subscriptions = this.notificationsCollection[notification];
 
         if (Array.isArray(subscriptions)) {
@@ -35,8 +35,7 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
                 (subscription: SubscriptionInterface) => {
                     try {
                         subscription.handler(data);
-                    }
-                    catch (error) {
+                    } catch (error) {
                         if (this.shouldIStopPublicationOnException) {
                             throw error;
                         }
@@ -49,7 +48,7 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
     /**
      * @inheritDoc
      */
-    findSubscriptionBySubscriberId(subscriberId: string): SubscriptionInterface[] {
+    public findSubscriptionBySubscriberId(subscriberId: string): SubscriptionInterface[] {
         return findSubscriptionByRoleAndComponentId(
             this,
             ROLE.SUBSCRIBER_ID,
@@ -60,7 +59,7 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
     /**
      * @inheritDoc
      */
-    findSubscriptionsByNotificationAndSubscriberId(notification: string, subscriberId: string): SubscriptionInterface[] {
+    public findSubscriptionsByNotificationAndSubscriberId(notification: string, subscriberId: string): SubscriptionInterface[] {
         return this.findSubscriptionsByNotification(notification).filter(subscription => {
             return subscription.subscriber_id === subscriberId;
         })
@@ -69,15 +68,15 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
     /**
      * @inheritDoc
      */
-    addSubscriber(notification: string, subscription: SubscriptionInterface): void {
+    public addSubscriber(notification: string, subscription: SubscriptionInterface): void {
         this.addSubscription(notification, subscription);
     }
 
     /**
      * @inheritDoc
      */
-    removeSubscriber(subscription_id: string): void {
-        this.clearSubscription(subscription_id);
+    public removeSubscriber(subscriptionId: string): void {
+        this.clearSubscription(subscriptionId);
     }
 }
 
