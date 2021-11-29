@@ -1,10 +1,15 @@
-import SubscriptionInterface from "../interfaces/subscription.interface";
-import SubscriberInterface from "../interfaces/subscriber.interface";
-import PublisherInterface from "../interfaces/publisher.interface";
-import NotificationRecord from "../interfaces/notification-record.interface";
+import type SubscriptionInterface from "../interfaces/subscription.interface";
+import type SubscriberInterface from "../interfaces/subscriber.interface";
+import type PublisherInterface from "../interfaces/publisher.interface";
+import type NotificationRecord from "../interfaces/notification-record.interface";
 import SubscriptionManager from "./subscription-manager.model";
 import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
-import {findSubscriptionByRoleAndComponentId, ROLE} from "../helper/subscription-manager.helper";
+import {
+    findSubscriptionByRoleAndComponentId,
+    ROLE,
+    DEFAULT_PRIORITY
+} from "../helper/subscription-manager.helper";
+import InvalidArgumentException from "../exception/invalid-argument.exception";
 
 let salt = 0;
 
@@ -62,9 +67,21 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
     /**
      * @inheritDoc
      */
-    public subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void {
+    public subscribe(
+        publisher: PublisherInterface,
+        notification: string,
+        handler: (payload: any) => void,
+        priority: number = DEFAULT_PRIORITY
+    ): void {
         const nbSubscriptions = this.getNbSubscriptions();
         const subscriptionId = `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
+
+        // assume type-checking cause script may run in js context or third project using ts-ignore decorator
+        if (isNaN(priority) || typeof priority !== 'number') {
+            throw new InvalidArgumentException(
+                `Unable to create a subscription with priority "${priority}" (typed as "${typeof priority}"). Number value is expected.`
+            );
+        }
 
         const subscription: SubscriptionInterface = {
             id: subscriptionId,
@@ -74,6 +91,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
                 publisher.removeSubscriber(subscriptionId);
                 this.removeSubscription(subscriptionId);
             },
+            priority,
             handler
         };
 

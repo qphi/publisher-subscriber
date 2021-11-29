@@ -8,6 +8,7 @@ interface SubscriptionInterface {
 
     /** callback to trigger each time publisher publish the right notification */
     handler: (payload: any) => void;
+    priority: number,
 
     /** call it to properly remove a subscription */
     unsubscribe: () => void;

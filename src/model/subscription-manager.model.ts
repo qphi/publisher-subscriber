@@ -143,6 +143,12 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
 
         if (!this.hasSubscription(subscription.id)) {
             this.notificationsCollection[notification].push(subscription);
+            this.notificationsCollection[notification].sort((a, b) => {
+                return b.priority - a.priority;
+            })
+
+            // console.log(this.notificationsCollection);
+
             this.recordSubscription(subscription.id, notification);
             this.nbSubscriptionRecorded++;
         } else {
