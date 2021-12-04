@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'index.ts'),
+    entry: [
+        path.resolve(__dirname, 'index.ts'),
+    ],
+
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "publisher-subscriber.min.js",
@@ -13,7 +16,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.ts']
+        extensions: ['.ts', '.js']
     },
     module: {
         rules: [

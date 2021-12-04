@@ -894,18 +894,32 @@ describe('PubSub test suite', () => {
             const pub = new Publisher('pub');
             const sub = new Subscriber('sub');
 
-            sub.subscribe(pub, 'foo', () => {
+            let trace = '';
+            sub.subscribe(pub, 'hello', () => {
+                trace += 'foo';
             });
-            sub.subscribe(pub, 'bar', () => {
+            sub.subscribe(pub, 'hello', () => {
+                trace += 'bar';
             });
 
             expect(sub.getNbSubscriptions()).to.equals(2);
             expect(pub.getSubscriptions().length).to.equals(2);
 
+
+            pub.publish('hello');
+            expect(trace.length).to.be.greaterThan(0);
+
             sub.destroy();
+
+            trace = '';
+
 
             expect(sub.getNbSubscriptions()).to.equals(0);
             expect(pub.getSubscriptions().length).to.equals(0);
+
+            pub.publish('hello');
+            expect(trace.length).to.be.equals(0);
+
         });
         it('implements identifiable correctly', () => {
             const pub = new Publisher('pub');

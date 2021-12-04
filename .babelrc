@@ -1,9 +1,23 @@
 {
+  "sourceType": "unambiguous",
   "presets": [
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "entry"
+        "useBuiltIns": "entry",
+        "corejs": "3"
+      }
+    ]
+  ],
+
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": "3",
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": true
       }
     ]
   ]
