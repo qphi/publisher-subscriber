@@ -143,6 +143,10 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
 
         if (!this.hasSubscription(subscription.id)) {
             this.notificationsCollection[notification].push(subscription);
+            this.notificationsCollection[notification].sort((a, b) => {
+                return b.priority - a.priority;
+            })
+
             this.recordSubscription(subscription.id, notification);
             this.nbSubscriptionRecorded++;
         } else {
@@ -169,8 +173,10 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
      */
     public destroy(): void {
         Object.values(this.notificationsCollection).forEach(subscriptionsType => {
-            subscriptionsType.forEach(
-                (subscription: SubscriptionInterface) => subscription.unsubscribe()
+            [ ...subscriptionsType].forEach(
+                (subscription: SubscriptionInterface) => {
+                    subscription.unsubscribe();
+                }
             )
         });
     }

@@ -12,8 +12,15 @@ interface SubscriberInterface extends SubscriptionManagerInterface {
      * @param publisher - publisher to subscribe
      * @param notification - notification whose trigger subscription handler
      * @param handler - callback to handle when publisher publish the right notification
+     * @param priority
+     * @throws InvalidArgumentException - When priority is not a valid number (like NaN)
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void
+    subscribe(
+        publisher: PublisherInterface,
+        notification: string,
+        handler: (payload: any) => void,
+        priority?: number
+    ): void
 
     /**
      * Remove a subscription by id

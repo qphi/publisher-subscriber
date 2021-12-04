@@ -6,7 +6,12 @@ import Subscriber from "../src/model/subscriber.model";
 import SubscriptionAlreadyExistsException from "../src/exception/subscription-already-exists.exception";
 import SubscriptionInterface from "../src/interfaces/subscription.interface";
 import SubscriptionNotFoundException from "../src/exception/subscription-not-found.exception";
-import {findSubscriptionByRoleAndComponentId} from "../src/helper/subscription-manager.helper";
+import {
+    DEFAULT_PRIORITY,
+    findSubscriptionByRoleAndComponentId,
+    HIGH_PRIORITY,
+    LOW_PRIORITY
+} from "../src/helper/subscription-manager.helper";
 import InvalidArgumentException from "../src/exception/invalid-argument.exception";
 import SubscriptionManager from "../src/model/subscription-manager.model";
 
@@ -220,18 +225,20 @@ describe('PubSub test suite', () => {
             }, 100);
         })
         it('retrieves subscriptions with pubsub', () => {
-           const publisher = new Publisher('pub');
-           const subscriber = new Subscriber('sub');
-           const pubsub = new PublisherSubscriber('pubsub');
+            const publisher = new Publisher('pub');
+            const subscriber = new Subscriber('sub');
+            const pubsub = new PublisherSubscriber('pubsub');
 
-           pubsub.subscribe(publisher, 'foo', () => {});
-           subscriber.subscribe(pubsub, 'bar', () => {});
+            pubsub.subscribe(publisher, 'foo', () => {
+            });
+            subscriber.subscribe(pubsub, 'bar', () => {
+            });
 
-           const fooSub = publisher.getSubscriptions()[0];
-           const barSub = subscriber.getSubscriptions()[0];
+            const fooSub = publisher.getSubscriptions()[0];
+            const barSub = subscriber.getSubscriptions()[0];
 
-           expect(pubsub.hasSubscription(fooSub.id)).to.be.true;
-           expect(pubsub.hasSubscription(barSub.id)).to.be.true;
+            expect(pubsub.hasSubscription(fooSub.id)).to.be.true;
+            expect(pubsub.hasSubscription(barSub.id)).to.be.true;
         });
     });
     describe('retrieve subscription behavior', () => {
@@ -250,18 +257,18 @@ describe('PubSub test suite', () => {
 
             const s1Foo = s1.findSubscriptionsByNotification('foo');
             const s1Bar = s1.findSubscriptionsByNotification('bar');
-            expect(JSON.stringify(s1Foo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p"}]');
+            expect(JSON.stringify(s1Foo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p","priority":0}]');
             expect(JSON.stringify(s1Bar)).to.equals('[]');
             const s2Foo = s2.findSubscriptionsByNotification('foo');
             const s2Bar = s2.findSubscriptionsByNotification('bar');
-            expect(JSON.stringify(s2Foo)).to.equals('[{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p"}]');
-            expect(JSON.stringify(s2Bar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p"}]');
+            expect(JSON.stringify(s2Foo)).to.equals('[{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p","priority":0}]');
+            expect(JSON.stringify(s2Bar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p","priority":0}]');
 
 
             const pFoo = p.findSubscriptionsByNotification('foo');
             const pBar = p.findSubscriptionsByNotification('bar');
-            expect(JSON.stringify(pFoo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p"},{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p"}]');
-            expect(JSON.stringify(pBar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p"}]');
+            expect(JSON.stringify(pFoo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p","priority":0},{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p","priority":0}]');
+            expect(JSON.stringify(pBar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p","priority":0}]');
         });
         it('return empty array if unknown notification is used with findSubscriptionByNotification', () => {
             const subscription = new Subscriber('subscription');
@@ -290,24 +297,24 @@ describe('PubSub test suite', () => {
             });
 
             expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('nope'))).to.equals('[]');
-            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('p1'))).to.equals('[{"id":"sub_subscriber_to_p1_salt_0","subscriber_id":"subscriber","publisher_id":"p1"},{"id":"sub_subscriber_to_p1_salt_1","subscriber_id":"subscriber","publisher_id":"p1"}]');
-            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('p2'))).to.equals('[{"id":"sub_subscriber_to_p2_salt_2","subscriber_id":"subscriber","publisher_id":"p2"},{"id":"sub_subscriber_to_p2_salt_3","subscriber_id":"subscriber","publisher_id":"p2"}]');
+            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('p1'))).to.equals('[{"id":"sub_subscriber_to_p1_salt_0","subscriber_id":"subscriber","publisher_id":"p1","priority":0},{"id":"sub_subscriber_to_p1_salt_1","subscriber_id":"subscriber","publisher_id":"p1","priority":0}]');
+            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('p2'))).to.equals('[{"id":"sub_subscriber_to_p2_salt_2","subscriber_id":"subscriber","publisher_id":"p2","priority":0},{"id":"sub_subscriber_to_p2_salt_3","subscriber_id":"subscriber","publisher_id":"p2","priority":0}]');
 
             pubsub.subscribe(p1, 'foo', () => {
             });
-            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('p1'))).to.equals('[{"id":"sub_pubsub_to_p1_salt_0","subscriber_id":"pubsub","publisher_id":"p1"}]');
+            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('p1'))).to.equals('[{"id":"sub_pubsub_to_p1_salt_0","subscriber_id":"pubsub","publisher_id":"p1","priority":0}]');
 
             pubsub.subscribe(p2, 'foo', () => {
             });
-            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('p2'))).to.equals('[{"id":"sub_pubsub_to_p2_salt_1","subscriber_id":"pubsub","publisher_id":"p2"}]');
+            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('p2'))).to.equals('[{"id":"sub_pubsub_to_p2_salt_1","subscriber_id":"pubsub","publisher_id":"p2","priority":0}]');
 
             pubsub.subscribe(pubsub, 'loop', () => {
             });
-            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_pubsub_salt_2","subscriber_id":"pubsub","publisher_id":"pubsub"}]');
+            expect(JSON.stringify(pubsub.findSubscriptionByPublisherId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_pubsub_salt_2","subscriber_id":"pubsub","publisher_id":"pubsub","priority":0}]');
 
             subscriber.subscribe(pubsub, 'toto', () => {
             });
-            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('pubsub'))).to.equals('[{"id":"sub_subscriber_to_pubsub_salt_4","subscriber_id":"subscriber","publisher_id":"pubsub"}]');
+            expect(JSON.stringify(subscriber.findSubscriptionByPublisherId('pubsub'))).to.equals('[{"id":"sub_subscriber_to_pubsub_salt_4","subscriber_id":"subscriber","publisher_id":"pubsub","priority":0}]');
         });
         it('return empty array if unknown publisher_id is used with findSubscriptionByPublisherId', () => {
             const subscription = new Subscriber('subscription');
@@ -333,18 +340,18 @@ describe('PubSub test suite', () => {
 
             const s1Foo = s1.findSubscriptionsByNotificationAndPublisherId('foo', 'p');
             const s1Bar = s1.findSubscriptionsByNotificationAndPublisherId('bar', 'p');
-            expect(JSON.stringify(s1Foo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p"}]');
+            expect(JSON.stringify(s1Foo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p","priority":0}]');
             expect(JSON.stringify(s1Bar)).to.equals('[]');
             const s2Foo = s2.findSubscriptionsByNotificationAndPublisherId('foo', 'p');
             const s2Bar = s2.findSubscriptionsByNotificationAndPublisherId('bar', 'p');
-            expect(JSON.stringify(s2Foo)).to.equals('[{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p"}]');
-            expect(JSON.stringify(s2Bar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p"}]');
+            expect(JSON.stringify(s2Foo)).to.equals('[{"id":"sub_s2_to_p_salt_0","subscriber_id":"s2","publisher_id":"p","priority":0}]');
+            expect(JSON.stringify(s2Bar)).to.equals('[{"id":"sub_s2_to_p_salt_1","subscriber_id":"s2","publisher_id":"p","priority":0}]');
 
             const s2TotoP = s2.findSubscriptionsByNotificationAndPublisherId('toto', 'p');
             const s2TotoP2 = s2.findSubscriptionsByNotificationAndPublisherId('toto', 'p2');
 
             expect(JSON.stringify(s2TotoP)).to.equals('[]');
-            expect(JSON.stringify(s2TotoP2)).to.equals('[{"id":"sub_s2_to_p2_salt_2","subscriber_id":"s2","publisher_id":"p2"}]');
+            expect(JSON.stringify(s2TotoP2)).to.equals('[{"id":"sub_s2_to_p2_salt_2","subscriber_id":"s2","publisher_id":"p2","priority":0}]');
         });
         it('find subscriptions by notification and subscriber_id', () => {
             const s1 = new Subscriber('s1');
@@ -362,16 +369,16 @@ describe('PubSub test suite', () => {
             const pFoo = p.findSubscriptionsByNotificationAndSubscriberId('foo', 's1');
             const pBar = p.findSubscriptionsByNotificationAndSubscriberId('bar', 's1');
 
-            expect(JSON.stringify(pFoo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p"}]');
+            expect(JSON.stringify(pFoo)).to.equals('[{"id":"sub_s1_to_p_salt_0","subscriber_id":"s1","publisher_id":"p","priority":0}]');
             expect(JSON.stringify(pBar)).to.equals('[]');
 
             const p2Foo = p2.findSubscriptionsByNotificationAndSubscriberId('foo', 's2');
             const p2BarS1 = p2.findSubscriptionsByNotificationAndSubscriberId('bar', 's1');
             const p2BarS2 = p2.findSubscriptionsByNotificationAndSubscriberId('bar', 's2');
 
-            expect(JSON.stringify(p2Foo)).to.equals('[{"id":"sub_s2_to_p2_salt_0","subscriber_id":"s2","publisher_id":"p2"}]');
+            expect(JSON.stringify(p2Foo)).to.equals('[{"id":"sub_s2_to_p2_salt_0","subscriber_id":"s2","publisher_id":"p2","priority":0}]');
             expect(JSON.stringify(p2BarS1)).to.equals('[]');
-            expect(JSON.stringify(p2BarS2)).to.equals('[{"id":"sub_s2_to_p2_salt_1","subscriber_id":"s2","publisher_id":"p2"}]');
+            expect(JSON.stringify(p2BarS2)).to.equals('[{"id":"sub_s2_to_p2_salt_1","subscriber_id":"s2","publisher_id":"p2","priority":0}]');
         });
         it('find subscription by subscriber_id', () => {
             const p1 = new Publisher('p1');
@@ -392,20 +399,20 @@ describe('PubSub test suite', () => {
 
             expect(JSON.stringify(p1.findSubscriptionBySubscriberId('nope'))).to.equals('[]');
 
-            expect(JSON.stringify(p1.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_p1_salt_0","subscriber_id":"subscriber","publisher_id":"p1"},{"id":"sub_subscriber_to_p1_salt_1","subscriber_id":"subscriber","publisher_id":"p1"}]');
-            expect(JSON.stringify(p2.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_p2_salt_2","subscriber_id":"subscriber","publisher_id":"p2"},{"id":"sub_subscriber_to_p2_salt_3","subscriber_id":"subscriber","publisher_id":"p2"}]');
+            expect(JSON.stringify(p1.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_p1_salt_0","subscriber_id":"subscriber","publisher_id":"p1","priority":0},{"id":"sub_subscriber_to_p1_salt_1","subscriber_id":"subscriber","publisher_id":"p1","priority":0}]');
+            expect(JSON.stringify(p2.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_p2_salt_2","subscriber_id":"subscriber","publisher_id":"p2","priority":0},{"id":"sub_subscriber_to_p2_salt_3","subscriber_id":"subscriber","publisher_id":"p2","priority":0}]');
 
             subscriber.subscribe(pubsub, 'foo', () => {
             });
-            expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_pubsub_salt_4","subscriber_id":"subscriber","publisher_id":"pubsub"}]');
+            expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('subscriber'))).to.equals('[{"id":"sub_subscriber_to_pubsub_salt_4","subscriber_id":"subscriber","publisher_id":"pubsub","priority":0}]');
 
             pubsub.subscribe(p2, 'foo', () => {
             });
-            expect(JSON.stringify(p2.findSubscriptionBySubscriberId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_p2_salt_0","subscriber_id":"pubsub","publisher_id":"p2"}]');
+            expect(JSON.stringify(p2.findSubscriptionBySubscriberId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_p2_salt_0","subscriber_id":"pubsub","publisher_id":"p2","priority":0}]');
 
             pubsub.subscribe(pubsub, 'loop', () => {
             });
-            expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_pubsub_salt_1","subscriber_id":"pubsub","publisher_id":"pubsub"},{"id":"sub_pubsub_to_p2_salt_0","subscriber_id":"pubsub","publisher_id":"p2"}]');
+            expect(JSON.stringify(pubsub.findSubscriptionBySubscriberId('pubsub'))).to.equals('[{"id":"sub_pubsub_to_pubsub_salt_1","subscriber_id":"pubsub","publisher_id":"pubsub","priority":0},{"id":"sub_pubsub_to_p2_salt_0","subscriber_id":"pubsub","publisher_id":"p2","priority":0}]');
         });
         it('return empty array if unknown subscriber_id is used with findSubscriptionBySubscriberId', () => {
             const pubsub = new PublisherSubscriber('pubsub');
@@ -742,7 +749,112 @@ describe('PubSub test suite', () => {
             publisher.publish('aNotification');
             expect(counter).to.equals(1);
         });
+        it('send notification to subscribers according to priorities', function () {
+            const sub1 = new Subscriber('sub1');
+            const sub2 = new Subscriber('sub2');
+            const sub3 = new Subscriber('sub3');
+            const sub4 = new Subscriber('sub4');
+            const pub = new Publisher('pub');
+
+            let trace = '';
+
+            sub1.subscribe(pub, 'foo', function () {
+                trace += "d";
+            }, LOW_PRIORITY);
+
+
+            sub2.subscribe(pub, 'foo', function () {
+                trace += "c";
+            }, 1);
+
+            sub3.subscribe(pub, 'foo', function () {
+                trace += "a";
+            }, HIGH_PRIORITY);
+
+            sub4.subscribe(pub, 'foo', function () {
+                trace += "b";
+            }, DEFAULT_PRIORITY);
+
+            pub.publish('foo');
+
+            expect(trace).to.equals('acbd');
+        });
+        it('add/remove subscriptions implies reorder subscription list', function () {
+            const sub = new Subscriber('sub');
+            const sub2 = new Subscriber('sub2');
+            const pub = new Publisher('pub');
+
+            let trace = '';
+
+            sub.subscribe(pub, 'foo', function () {
+                trace += "d";
+            }, LOW_PRIORITY);
+
+            sub2.subscribe(pub, 'foo', function () {
+                trace += "a";
+            }, HIGH_PRIORITY);
+
+            pub.publish('foo');
+            expect(trace).to.equals('ad');
+
+            trace = '';
+
+            sub.subscribe(pub, 'foo', function () {
+                trace += "c";
+            }, 1);
+
+
+            pub.publish('foo');
+            expect(trace).to.equals('acd');
+            trace = '';
+
+            sub2.unsubscribeFromPublisherId('pub');
+
+            sub.subscribe(pub, 'foo', function () {
+                trace += "b";
+            }, DEFAULT_PRIORITY);
+
+            pub.publish('foo');
+            expect(trace).to.equals('cbd');
+        });
+
+        it('throws InvalidArgumentException when priority is not a valid number', function () {
+            const sub = new Subscriber('sub');
+            const pub = new Publisher('pub');
+
+            expect(
+                sub.subscribe.bind(
+                    sub,
+                    pub,
+                    'foo',
+                    function () {
+                        // assume empty callback
+                    },
+                    NaN
+                )
+            ).to.throw(
+                InvalidArgumentException,
+                'Unable to create a subscription with priority "NaN" (typed as "number"). Number value is expected.'
+            );
+
+            expect(
+                // @ts-ignore
+                sub.subscribe.bind(
+                    sub,
+                    pub,
+                    'foo',
+                    function () {
+                        // assume empty callback
+                    },
+                    "1"
+                )
+            ).to.throw(
+                InvalidArgumentException,
+                'Unable to create a subscription with priority "1" (typed as "string"). Number value is expected.'
+            );
+        });
     });
+
     describe('Publisher-Subscriber detect exception and correctly trigger them', () => {
         it('dedupe subscription  by id', () => {
             const publisher = new Publisher('publisher');
@@ -782,18 +894,32 @@ describe('PubSub test suite', () => {
             const pub = new Publisher('pub');
             const sub = new Subscriber('sub');
 
-            sub.subscribe(pub, 'foo', () => {
+            let trace = '';
+            sub.subscribe(pub, 'hello', () => {
+                trace += 'foo';
             });
-            sub.subscribe(pub, 'bar', () => {
+            sub.subscribe(pub, 'hello', () => {
+                trace += 'bar';
             });
 
             expect(sub.getNbSubscriptions()).to.equals(2);
             expect(pub.getSubscriptions().length).to.equals(2);
 
+
+            pub.publish('hello');
+            expect(trace.length).to.be.greaterThan(0);
+
             sub.destroy();
+
+            trace = '';
+
 
             expect(sub.getNbSubscriptions()).to.equals(0);
             expect(pub.getSubscriptions().length).to.equals(0);
+
+            pub.publish('hello');
+            expect(trace.length).to.be.equals(0);
+
         });
         it('implements identifiable correctly', () => {
             const pub = new Publisher('pub');
@@ -835,27 +961,32 @@ describe('PubSub test suite', () => {
         it('unsubscribe', () => {
             const foo = new PublisherSubscriber('foo');
 
-            foo.subscribe(foo, 'zoo', () => {});
+            foo.subscribe(foo, 'zoo', () => {
+            });
             foo.destroy();
 
             expect(foo.getSubscriptions().length).to.equals(0);
 
 
-            foo.subscribe(foo, 'zoo', () => {});
+            foo.subscribe(foo, 'zoo', () => {
+            });
             foo.unsubscribeFromNotification('zoo');
 
             expect(foo.getSubscriptions().length).to.equals(0);
 
-            foo.subscribe(foo, 'zoo', () => {});
+            foo.subscribe(foo, 'zoo', () => {
+            });
             foo.unsubscribeFromPublisherId(foo.getId());
             expect(foo.getSubscriptions().length).to.equals(0);
 
-            foo.subscribe(foo, 'zoo', () => {});
+            foo.subscribe(foo, 'zoo', () => {
+            });
             foo.unsubscribeFromSubscriptionId(foo.getSubscriptions()[0].id);
             expect(foo.getSubscriptions().length).to.equals(0);
 
             const bar = new PublisherSubscriber('bar');
-            foo.subscribe(bar, 'hello', () => {});
+            foo.subscribe(bar, 'hello', () => {
+            });
             foo.unsubscribeFromPublisherId('bar');
 
 

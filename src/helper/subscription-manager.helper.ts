@@ -34,3 +34,7 @@ export const ROLE = {
     PUBLISHER_ID: 'publisher_id',
     SUBSCRIBER_ID: 'subscriber_id',
 }
+
+export const LOW_PRIORITY = -100;
+export const DEFAULT_PRIORITY = 0;
+export const HIGH_PRIORITY = 100;
