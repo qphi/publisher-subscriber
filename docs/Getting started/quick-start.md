@@ -1,12 +1,13 @@
-# Prerequisites
+# 📦 Prerequisites 
 
 * Add the module to your project
   ```sh
-  npm install qpi/publisher-subscriber --save
+  npm install @qphi/publisher-subscriber --save
   ```
 
 That's all! Now you can start to play with the notification system directly in your ts or js files!
-
+<br/>
+<br/>
 # Ready to publish?
 
 ## Publish your first notification
