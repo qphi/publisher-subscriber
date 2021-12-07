@@ -1,10 +1,20 @@
 # Publish in depth
+ 
 
 ## Synchronous first
 
 When a publisher publish a notification, it will retrieve all subscriptions bound to this notification and invoke them handler synchronously.
 <br/>
 <br/>
+You can add a subscription at any time by calling `subscribe` method over any subscriber.
+```ts
+public subscribe(
+    publisher: PublisherInterface,
+    notification: string,
+    handler: (payload: any) => void,
+    priority: number = DEFAULT_PRIORITY
+): void;
+```
 It is possible to make some async stuff into handler, but conceptually publisher shouldn't wait until a subscriber end its own handler execution before notify another subscriber.
 
 ```js
@@ -32,6 +42,28 @@ publisher.publish('ping');
 
 [comment]: <> (<br/>)
 
+## Using priority
+
+If different subscriber listen to the same notification (published by same publisher), their order is defined by the **priority** parameter of `subscribe` method. This value is a positive or negative integer which defaults to `0`. The higher the number, the earlier the method is called.
+
+```ts 
+const pub = new Publisher('pub');
+const subfoo = new Subscriber('subfoo');
+const subbar = new Subscriber('subbar');
+
+let trace = '';
+
+subbar.subscribe(pub, 'hello', () => {
+    trace += 'bar';
+}, 10);
+
+subfoo.subscribe(pub, 'hello', () => {
+    trace += 'foo';
+}, 20);
+
+pub.publish('hello');
+// console.log(trace) ==> "foobar"
+```
 ## Build Asynchronous Workflow
 
 Sometimes, you could want to bind async behavior to a subscription and wait until this job is done before notify next subscriber.

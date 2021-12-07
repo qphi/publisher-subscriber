@@ -55,7 +55,7 @@ This module provides two main interfaces:``PublisherInterface`` and ``Subscriber
 
 * Adding the module to your project 
   ```sh
-  npm install qpi/publisher-subscriber --save
+  npm install @qphi/publisher-subscriber --save
   ```
 
 That's it! Now you can start to play with the notification system!
