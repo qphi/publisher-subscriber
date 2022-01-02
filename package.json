@@ -1,6 +1,6 @@
 {
   "name": "@qphi/publisher-subscriber",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "dist/publisher-subscriber.min.js",
   "browserslist": [
@@ -42,6 +42,7 @@
     "nyc": "^15.1.0",
     "ts-loader": "^9.2.3",
     "ts-node": "^9.1.1",
+    "typescript": "^4.5.4",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
   },
@@ -57,5 +58,6 @@
   },
   "dependencies": {
     "regenerator-runtime": "^0.13.9"
-  }
+  },
+  "typings": "./dist/types/index.d.ts"
 }
