@@ -26,5 +26,14 @@ export default interface SubscriptionManagerInterface extends IdentifiableInterf
      * @return {SubscriptionInterface | null } - the subscription or null if no subscription was found
      */
     findSubscriptionById(subscriptionId: string): SubscriptionInterface | null;
+    /**
+     * Remove subscription from subscription list.
+     * Cause subscription might involve memory leak you shouldn't invoke this method manually.
+     * Let sub-class implements properly its own logic and prevent memory leak at this time.
+     * @param subscriptionId
+     * @throws SubscriptionNotFoundException - when subscription was not found
+     * @internal
+     */
+    clearSubscription(subscriptionId: string): void;
 }
 //# sourceMappingURL=subscription-manager.interface.d.ts.map

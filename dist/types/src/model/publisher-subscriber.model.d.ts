@@ -9,6 +9,7 @@ declare class PublisherSubscriber implements PublisherSubscriberInterface {
     private readonly id;
     private readonly publisher;
     private readonly subscriber;
+    private readonly removedSelfSubscription;
     constructor(id: string);
     /**
      * @inheritDoc
@@ -114,6 +115,10 @@ declare class PublisherSubscriber implements PublisherSubscriberInterface {
      * @inheritDoc
      */
     stopPublicationOnException(): void;
+    /**
+     * @inheritDoc
+     */
+    clearSubscription(subscriptionId: string): void;
 }
 export default PublisherSubscriber;
 //# sourceMappingURL=publisher-subscriber.model.d.ts.map

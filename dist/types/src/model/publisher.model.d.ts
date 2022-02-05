@@ -33,7 +33,7 @@ declare class Publisher extends SubscriptionManager implements PublisherInterfac
     /**
      * @inheritDoc
      */
-    removeSubscriber(subscriptionId: string): void;
+    removeSubscriber(subscriberId: string): void;
 }
 export default Publisher;
 //# sourceMappingURL=publisher.model.d.ts.map
