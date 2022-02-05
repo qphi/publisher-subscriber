@@ -12,6 +12,7 @@ interface PublisherInterface extends SubscriptionManagerInterface {
      */
     publish(notification: string, data?: any): void;
 
+
     /**
      * Add a subscription whose handler will be triggered when publisher will publish expected notification
      * @param notification - notification name whose trigger handler
