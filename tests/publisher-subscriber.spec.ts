@@ -625,6 +625,18 @@ describe('PubSub test suite', () => {
             expect(pubtwo.getNbSubscriptions()).to.equals(0);
             expect(pubsub.getNbSubscriptions()).to.equals(0);
         });
+        it('remove all subscriptions between pub and sub using publisher.removeSubscriber', function () {
+            const publisher = new Publisher('pub');
+            const subscriber = new Subscriber('sub');
+
+            subscriber.subscribe(publisher, 'foo', () => {
+            });
+            expect(publisher.getNbSubscriptions()).to.equals(1);
+            expect(subscriber.getNbSubscriptions()).to.equals(1);
+            publisher.removeSubscriber(subscriber.getId());
+            expect(publisher.getNbSubscriptions()).to.equals(0);
+            expect(subscriber.getNbSubscriptions()).to.equals(0);
+        });
     });
     describe('Publishing workflow', () => {
         it('handle subscription list as a fifo as default', () => {

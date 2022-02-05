@@ -75,8 +75,9 @@ class Publisher extends SubscriptionManager implements PublisherInterface {
     /**
      * @inheritDoc
      */
-    public removeSubscriber(subscriptionId: string): void {
-        this.clearSubscription(subscriptionId);
+    public removeSubscriber(subscriberId: string): void {
+        const subscriptions = this.findSubscriptionBySubscriberId(subscriberId);
+        subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 }
 

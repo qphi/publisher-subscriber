@@ -98,9 +98,9 @@ export default class SubscriptionManager implements SubscriptionManagerInterface
      * Let sub-class implements properly its own logic and prevent memory leak at this time.
      * @param subscriptionId
      * @throws SubscriptionNotFoundException - when subscription was not found
-     * @protected
+     * @internal
      */
-    protected clearSubscription(subscriptionId: string): void {
+    public clearSubscription(subscriptionId: string): void {
         const subscriptionIndex = this.findSubscriptionIndexById(subscriptionId);
 
         if (subscriptionIndex.index < 0) {
