@@ -88,8 +88,8 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
             subscriber_id: this.getId(),
             publisher_id: publisher.getId(),
             unsubscribe: () => {
-                publisher.removeSubscriber(subscriptionId);
-                this.removeSubscription(subscriptionId);
+                publisher.clearSubscription(subscriptionId);
+                this.clearSubscription(subscriptionId);
             },
             priority,
             handler

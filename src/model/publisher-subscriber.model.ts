@@ -6,6 +6,7 @@ import Subscriber from "./subscriber.model";
 import SubscriberInterface from "../interfaces/subscriber.interface";
 import NotificationRecord from "../interfaces/notification-record.interface";
 import {findSubscriptionByRoleAndComponentId, ROLE} from "../helper/subscription-manager.helper";
+import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
 
 /**
  * Define instance that can publish notification and handle notification from publisher
@@ -14,6 +15,8 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
     private readonly id: string;
     private readonly publisher: PublisherInterface;
     private readonly subscriber: SubscriberInterface;
+
+    private readonly removedSelfSubscription = new Set<string>() ;
 
     constructor(id: string) {
         this.id = id;
@@ -237,6 +240,36 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
      */
     public stopPublicationOnException(): void {
         this.publisher.stopPublicationOnException();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public clearSubscription(subscriptionId: string): void {
+        // due to symmetric unsubscribe process, a self-subscribed-pub/sub will call clearSubscription twice
+        // this mechanism prevent SubscriptionNotFoundError
+        if (this.removedSelfSubscription.has(subscriptionId)) {
+            this.removedSelfSubscription.delete(subscriptionId);
+            return;
+        }
+
+        const subscription = this.findSubscriptionById(subscriptionId);
+
+        if (subscription === null) {
+            throw new SubscriptionNotFoundException(subscriptionId, this.getId());
+        }
+
+        if (subscription?.subscriber_id === this.subscriber.getId()) {
+            this.subscriber.clearSubscription(subscriptionId);
+        }
+
+        if (subscription?.publisher_id === this.publisher.getId()) {
+            this.publisher.clearSubscription(subscriptionId);
+        }
+
+        if (subscription?.publisher_id === subscription?.subscriber_id) {
+            this.removedSelfSubscription.add(subscriptionId);
+        }
     }
 }
 

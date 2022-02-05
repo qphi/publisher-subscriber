@@ -625,6 +625,18 @@ describe('PubSub test suite', () => {
             expect(pubtwo.getNbSubscriptions()).to.equals(0);
             expect(pubsub.getNbSubscriptions()).to.equals(0);
         });
+        it('remove all subscriptions between pub and sub using publisher.removeSubscriber', function () {
+            const publisher = new Publisher('pub');
+            const subscriber = new Subscriber('sub');
+
+            subscriber.subscribe(publisher, 'foo', () => {
+            });
+            expect(publisher.getNbSubscriptions()).to.equals(1);
+            expect(subscriber.getNbSubscriptions()).to.equals(1);
+            publisher.removeSubscriber(subscriber.getId());
+            expect(publisher.getNbSubscriptions()).to.equals(0);
+            expect(subscriber.getNbSubscriptions()).to.equals(0);
+        });
     });
     describe('Publishing workflow', () => {
         it('handle subscription list as a fifo as default', () => {
@@ -996,5 +1008,37 @@ describe('PubSub test suite', () => {
         it('works with wait until', () => {
 
         })
+        it('clears properly self subscription', function () {
+            const pubsub = new PublisherSubscriber('pubsub');
+
+            pubsub.subscribe(pubsub, 'foo', () => {
+            });
+            expect(pubsub.getNbSubscriptions()).to.equals(1);
+            pubsub.removeSubscriber(pubsub.getId());
+            expect(pubsub.getNbSubscriptions()).to.equals(0);
+
+
+            pubsub.subscribe(pubsub, 'foo', () => {
+            });
+            let subscription = pubsub.getSubscriptions()[0];
+
+            // warning: don't do that in your code, clearSubscription is an internal method!
+            pubsub.clearSubscription(subscription.id);
+            expect(pubsub.getNbSubscriptions()).to.equals(0);
+
+            // does not throw error on second call
+            pubsub.clearSubscription(subscription.id);
+            // throws error on third call
+            expect(pubsub.clearSubscription.bind(pubsub, subscription.id)).to.throw(
+                SubscriptionNotFoundException,
+                'Unable to find subscription with id "sub_pubsub_to_pubsub_salt_0" in component "pubsub".'
+            );
+
+            pubsub.subscribe(pubsub, 'foo', () => {});
+            subscription = pubsub.getSubscriptions()[0];
+            expect(pubsub.getNbSubscriptions()).to.equals(1);
+            subscription.unsubscribe();
+            expect(pubsub.getNbSubscriptions()).to.equals(0);
+        });
     });
 });

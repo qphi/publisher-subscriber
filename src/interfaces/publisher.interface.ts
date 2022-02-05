@@ -12,6 +12,7 @@ interface PublisherInterface extends SubscriptionManagerInterface {
      */
     publish(notification: string, data?: any): void;
 
+
     /**
      * Add a subscription whose handler will be triggered when publisher will publish expected notification
      * @param notification - notification name whose trigger handler
@@ -21,9 +22,9 @@ interface PublisherInterface extends SubscriptionManagerInterface {
 
     /**
      * Remove all subscriptions between publisher and the subscriber with id `subscription_id`
-     * @param subscriptionId - id of a potential subscriber
+     * @param subscriberId - id of a potential subscriber
      */
-    removeSubscriber(subscriptionId: string): void;
+    removeSubscriber(subscriberId: string): void;
 
     /**
      * Find all subscriptions between publisher and the subscriber with id `subscription_id`

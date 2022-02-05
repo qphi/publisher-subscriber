@@ -40,7 +40,20 @@ console.log(subscriber.findSubscriptionByPublisherId(publisher.getId()));
 // => []
 ```
 
-unsubscribeFromPublisherId
+
+## Using subscriber id
+
+It removes all subscription between a subscriber and a publisher.
+
+```js
+subscriber.subscribe(publisher, 'some-notification', () => { /* ... */ });
+subscriber.subscribe(publisher, 'other-notification', () => { /* ... */ });
+
+publisher.removeSubscriber(subscriber.getId());
+
+console.log(subscriber.findSubscriptionByPublisherId(publisher.getId()));
+// => []
+```
 
 ## Using subscription id
 
