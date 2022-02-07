@@ -108,6 +108,34 @@ userService.publish('user.profile.picture.updated', user);
 
 Note that decoupling event involve service decoupling. Indeed, ``imageCacheService`` has now no reason to depends on ``userService`` .
 
+## Waiting for multiples notifications
+
+Building complex workflow, you may wait for multiples notifications from multiples publisher. In this case you should use ``waitUntil`` method and specify notifications as an array.
+
+```js
+subscriber.waitUntil([
+    {
+        from: publisher,
+        name: 'foo'
+    },
+
+    {
+        from: anotherPublisher,
+        name: 'bar'
+    }
+]).then(parameters => {
+    console.log(parameters);
+})
+
+publisher.publish('foo', 'hello');
+// ==> nothing happen yet
+
+anotherPublisher.publish('bar', 'world');
+// ==> [ 'hello', 'world' ]
+```
+`waitUntil` returns a `Promise` and use `Promise.all` under the hood. The order of parameters depends on notification array order.
+?> Note that subscriptions added by waitUntil are automatically clear once handler is trigger.
+
 ## Deal With Errors
 
 If a subscription handle throw an error, publisher will catch and mute it by default. According to the sequential publication constraint and separation of concern principle, an exception into subscription's handler shouldn't impact other subscribers job.
