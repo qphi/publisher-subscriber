@@ -208,16 +208,20 @@ describe('PubSub test suite', () => {
                     from: publisher,
                     name: 'foo'
                 }
-            ]).then(() => {
+            ]).then((parametersArray) => {
+                expect(parametersArray.length).to.equals(3);
+                expect(parametersArray[0]).to.equals('b');
+                expect(parametersArray[1]).to.be.undefined;
+                expect(parametersArray[2]).to.equals('a');
                 trigger = true;
             });
 
-            publisher.publish('foo');
-            pubsub.publish('foo');
+            publisher.publish('foo', 'a');
+            pubsub.publish('foo', 'b');
 
             setTimeout(() => {
                 expect(trigger).to.be.false;
-                pubsub.publish('bar');
+                pubsub.publish('bar', );
                 setTimeout(() => {
                     expect(trigger).to.be.true;
                     done();
@@ -1006,6 +1010,7 @@ describe('PubSub test suite', () => {
             expect(bar.getSubscriptions().length).to.equals(0);
         });
         it('works with wait until', () => {
+
 
         })
         it('clears properly self subscription', function () {

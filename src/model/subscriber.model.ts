@@ -127,8 +127,8 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
                         dedicatedSubSubscriber.subscribe(
                             notification.from,
                             notification.name,
-                            () => {
-                                resolve1();
+                            (data) => {
+                                resolve1(data);
                             }
                         );
                     });
