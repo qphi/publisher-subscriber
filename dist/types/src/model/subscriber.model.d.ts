@@ -26,7 +26,7 @@ declare class Subscriber extends SubscriptionManager implements SubscriberInterf
     /**
      * @inheritDoc
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void, priority?: number): void;
+    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void, priority?: number): SubscriptionInterface;
     /**
      * @inheritDoc
      */

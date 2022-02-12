@@ -2,13 +2,19 @@ import PublisherSubscriberInterface from "../interfaces/publisher-subscriber.int
 import SubscriptionInterface from "../interfaces/subscription.interface";
 import PublisherInterface from "../interfaces/publisher.interface";
 import NotificationRecord from "../interfaces/notification-record.interface";
+import PublisherProxyInterface from "../interfaces/publisher-proxy.interface";
 /**
  * Define instance that can publish notification and handle notification from publisher
  */
-declare class PublisherSubscriber implements PublisherSubscriberInterface {
+declare class PublisherSubscriber implements PublisherSubscriberInterface, PublisherProxyInterface {
     private readonly id;
     private readonly publisher;
     private readonly subscriber;
+    /**
+     * Map<publisherId, subscriptionId[]>
+     * @private
+     */
+    private readonly proxies;
     private readonly removedSelfSubscription;
     constructor(id: string);
     /**
@@ -42,7 +48,7 @@ declare class PublisherSubscriber implements PublisherSubscriberInterface {
     /**
      * @inheritDoc
      */
-    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void;
+    subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void, priority?: number): SubscriptionInterface;
     /**
      * @inheritDoc
      */
@@ -119,6 +125,9 @@ declare class PublisherSubscriber implements PublisherSubscriberInterface {
      * @inheritDoc
      */
     clearSubscription(subscriptionId: string): void;
+    addProxy(publisher: PublisherInterface, notification: string, hook?: (payload: any) => any): this;
+    private getPublisherProxies;
+    removeProxy(publisher: PublisherInterface, notification: string): this;
 }
 export default PublisherSubscriber;
 //# sourceMappingURL=publisher-subscriber.model.d.ts.map
