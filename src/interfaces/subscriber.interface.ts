@@ -20,7 +20,7 @@ interface SubscriberInterface extends SubscriptionManagerInterface {
         notification: string,
         handler: (payload: any) => void,
         priority?: number
-    ): void
+    ): SubscriptionInterface;
 
     /**
      * Remove a subscription by id
