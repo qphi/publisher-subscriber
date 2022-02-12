@@ -10,8 +10,7 @@ import {
     DEFAULT_PRIORITY
 } from "../helper/subscription-manager.helper";
 import InvalidArgumentException from "../exception/invalid-argument.exception";
-
-let salt = 0;
+import {generateId} from "../helper/common.helper";
 
 /**
  * Define instance that can handle notification from publisher
@@ -72,7 +71,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
         notification: string,
         handler: (payload: any) => void,
         priority: number = DEFAULT_PRIORITY
-    ): void {
+    ): SubscriptionInterface {
         const nbSubscriptions = this.getNbSubscriptions();
         const subscriptionId = `sub_${this.getId()}_to_${publisher.getId()}_salt_${nbSubscriptions}`;
 
@@ -97,6 +96,8 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
 
         this.addSubscription(notification, subscription);
         publisher.addSubscriber(notification, subscription);
+
+        return subscription;
     }
 
     /**
@@ -118,7 +119,7 @@ class Subscriber extends SubscriptionManager implements SubscriberInterface {
      */
     public waitUntil(notifications: Array<NotificationRecord>): Promise<Array<any>> {
         const dedicatedSubSubscriber = new Subscriber(
-            `wait-until-${notifications.map(item => item.name).join('-and-')}-salt_${salt++}`
+            generateId(`wait-until-${notifications.map(item => item.name).join('-and-')}-salt`)
         );
         return new Promise((resolve) => {
             Promise.all(

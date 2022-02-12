@@ -221,7 +221,7 @@ describe('PubSub test suite', () => {
 
             setTimeout(() => {
                 expect(trigger).to.be.false;
-                pubsub.publish('bar', );
+                pubsub.publish('bar',);
                 setTimeout(() => {
                     expect(trigger).to.be.true;
                     done();
@@ -1039,11 +1039,138 @@ describe('PubSub test suite', () => {
                 'Unable to find subscription with id "sub_pubsub_to_pubsub_salt_0" in component "pubsub".'
             );
 
-            pubsub.subscribe(pubsub, 'foo', () => {});
+            pubsub.subscribe(pubsub, 'foo', () => {
+            });
             subscription = pubsub.getSubscriptions()[0];
             expect(pubsub.getNbSubscriptions()).to.equals(1);
             subscription.unsubscribe();
             expect(pubsub.getNbSubscriptions()).to.equals(0);
+        });
+    });
+
+    describe('proxy', function () {
+        it('can add or remove proxy', () => {
+            const pubsub = new PublisherSubscriber('proxy');
+            const publisher = new Publisher('publisher');
+            const subscriber = new Subscriber('subscriber');
+
+            expect(subscriber.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIPTION_NUMBER);
+            expect(publisher.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIBER_NUMBER);
+
+            pubsub.addProxy(publisher, 'foo');
+            expect(subscriber.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIPTION_NUMBER);
+            expect(publisher.getNbSubscriptions()).to.equals(1, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptions()).to.equals(1, Message.INVALID_SUBSCRIBER_NUMBER);
+
+            pubsub.removeProxy(publisher, 'foo');
+            expect(subscriber.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIPTION_NUMBER);
+            expect(publisher.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptions()).to.equals(0, Message.INVALID_SUBSCRIBER_NUMBER);
+        });
+
+        it('repeat proxied publication', () => {
+            const pubsub = new PublisherSubscriber('proxy');
+            const publisher = new Publisher('publisher');
+            const subscriber = new Subscriber('subscriber');
+
+            pubsub.addProxy(publisher, 'foo');
+            pubsub.addProxy(publisher, 'bar');
+            let fooTrigger = 0;
+            const expectedBarValue = 42;
+            subscriber.subscribe(pubsub, 'foo', () => {
+                fooTrigger++;
+            });
+
+            subscriber.subscribe(pubsub, 'bar', payload => {
+                expect(payload).to.equals(expectedBarValue);
+            });
+
+            expect(subscriber.getNbSubscriptions()).to.equals(2, Message.INVALID_SUBSCRIPTION_NUMBER);
+            expect(publisher.getNbSubscriptions()).to.equals(2, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptionsAsSubscriber()).to.equals(2, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptionsAsPublisher()).to.equals(2, Message.INVALID_SUBSCRIBER_NUMBER);
+
+            publisher.publish('foo');
+            publisher.publish('bar', expectedBarValue);
+
+            expect(fooTrigger).to.equals(1);
+
+            pubsub.removeProxy(publisher, 'foo');
+            expect(pubsub.getNbSubscriptionsAsSubscriber()).to.equals(1, Message.INVALID_SUBSCRIBER_NUMBER);
+            expect(pubsub.getNbSubscriptionsAsPublisher()).to.equals(2, Message.INVALID_SUBSCRIBER_NUMBER);
+
+            publisher.publish('foo');
+            expect(fooTrigger).to.equals(1);
+        });
+
+        it('support hooks to create custom payload', () => {
+            const pubsub = new PublisherSubscriber('proxy');
+            const publisher = new Publisher('publisher');
+            const subscriber = new Subscriber('subscriber');
+
+            pubsub.addProxy(publisher, 'foo', payload => {
+                return { ...payload, message: 'bar' }
+            });
+
+            let finalPayload = null;
+            subscriber.subscribe(pubsub, 'foo', payload => {
+                finalPayload = payload;
+            });
+
+            publisher.publish('foo', {value: 42});
+            expect(JSON.stringify(finalPayload)).to.equals('{"value":42,"message":"bar"}');
+
+            publisher.publish('foo', { hello: 'wolrd', num: 888 });
+            expect(JSON.stringify(finalPayload)).to.equals('{"hello":"wolrd","num":888,"message":"bar"}');
+
+            pubsub.removeProxy(publisher, 'foo');
+
+            publisher.publish('foo', {value: 42});
+            expect(JSON.stringify(finalPayload)).to.equals('{"hello":"wolrd","num":888,"message":"bar"}');
+
+        });
+        it('centralize all publisher notification to one proxy', () => {
+            const pubsub = new PublisherSubscriber('proxy');
+            const p1 = new Publisher('p1');
+            const p2 = new Publisher('p2');
+            const p3 = new Publisher('p3');
+
+            const subscriber = new Subscriber('subscriber');
+
+            let counter = 0;
+            pubsub.addProxy(p1, 'foo');
+            pubsub.addProxy(p2, 'foo');
+            pubsub.addProxy(p3, 'foo');
+
+
+            subscriber.subscribe(pubsub, 'foo', () => {
+                counter++;
+            });
+
+            p1.publish('foo');
+            expect(counter).to.equals(1);
+
+            p2.publish('foo');
+            expect(counter).to.equals(2);
+
+            p3.publish('foo');
+            expect(counter).to.equals(3);
+
+            pubsub.removeProxy(p3, 'foo');
+            p3.publish('foo');
+            expect(counter).to.equals(3);
+
+            p1.publish('foo');
+            p2.publish('foo');
+            expect(counter).to.equals(5);
+
+            pubsub.removeProxy(p1, 'foo');
+            pubsub.removeProxy(p2, 'foo');
+
+            p1.publish('foo');
+            p2.publish('foo');
+            expect(counter).to.equals(5);
         });
     });
 });

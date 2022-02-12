@@ -7,16 +7,22 @@ import SubscriberInterface from "../interfaces/subscriber.interface";
 import NotificationRecord from "../interfaces/notification-record.interface";
 import {findSubscriptionByRoleAndComponentId, ROLE} from "../helper/subscription-manager.helper";
 import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
+import PublisherProxyInterface from "../interfaces/publisher-proxy.interface";
 
 /**
  * Define instance that can publish notification and handle notification from publisher
  */
-class PublisherSubscriber implements PublisherSubscriberInterface {
+class PublisherSubscriber implements PublisherSubscriberInterface, PublisherProxyInterface {
     private readonly id: string;
     private readonly publisher: PublisherInterface;
     private readonly subscriber: SubscriberInterface;
+    /**
+     * Map<publisherId, subscriptionId[]>
+     * @private
+     */
+    private readonly proxies: Map<string, Set<string>> = new Map<string, Set<string>>();
 
-    private readonly removedSelfSubscription = new Set<string>() ;
+    private readonly removedSelfSubscription = new Set<string>();
 
     constructor(id: string) {
         this.id = id;
@@ -80,8 +86,13 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
     /**
      * @inheritDoc
      */
-    public subscribe(publisher: PublisherInterface, notification: string, handler: (payload: any) => void): void {
-        this.subscriber.subscribe.apply(this, [ publisher, notification, handler ]);
+    public subscribe(
+        publisher: PublisherInterface,
+        notification: string,
+        handler: (payload: any) => void,
+        priority?: number
+    ): SubscriptionInterface {
+        return this.subscriber.subscribe.apply(this, [publisher, notification, handler, priority]);
     }
 
     /**
@@ -271,6 +282,46 @@ class PublisherSubscriber implements PublisherSubscriberInterface {
             this.removedSelfSubscription.add(subscriptionId);
         }
     }
+
+    public addProxy(publisher: PublisherInterface, notification: string, hook: (payload: any) => any = payload => {
+        return payload
+    }): this {
+        const publisherProxies = this.getPublisherProxies(publisher.getId());
+        const subscription = this.subscribe(
+            publisher,
+            notification,
+            payload => {
+                this.publish(notification, hook(payload));
+            }
+        );
+
+        publisherProxies.add(subscription.id);
+
+        this.proxies.set(
+            publisher.getId(),
+            publisherProxies
+        );
+
+        return this;
+    }
+
+    private getPublisherProxies(publisherId: string): Set<string> {
+        return  this.proxies.get(publisherId) ?? new Set<string>();
+    }
+
+    public removeProxy(publisher: PublisherInterface, notification: string): this {
+        const potentialProxies = this.findSubscriptionsByNotificationAndPublisherId(notification, publisher.getId());
+        const publisherProxies = this.getPublisherProxies(publisher.getId());
+        const proxyIds = potentialProxies.filter(subscription => publisherProxies.has(subscription.id));
+
+        proxyIds.forEach(subscriptionProxy => {
+            this.unsubscribeFromSubscriptionId(subscriptionProxy.id);
+            publisherProxies.delete(subscriptionProxy.id);
+        });
+
+        return this;
+    }
+
 }
 
 export default PublisherSubscriber;
