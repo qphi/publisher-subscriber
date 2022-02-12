@@ -1,6 +1,6 @@
 {
   "name": "@qphi/publisher-subscriber",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "A library to implements messages patterns and manage data flow between objects",
   "main": "dist/publisher-subscriber.min.js",
   "browserslist": [
