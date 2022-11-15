@@ -57,7 +57,7 @@
     "test": "tests"
   },
   "dependencies": {
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.10"
   },
   "typings": "./dist/types/index.d.ts"
 }
