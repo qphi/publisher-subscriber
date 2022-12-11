@@ -6,7 +6,5 @@ export { default as PublisherInterface } from './src/interfaces/publisher.interf
 export { default as SubscriberInterface } from './src/interfaces/subscriber.interface';
 export { default as PublisherSubscriberInterface } from './src/interfaces/publisher-subscriber.interface';
 export * as SubscriberHelper from './src/helper/subscriber.helper';
-export { default as InvalidArgumentException } from './src/exception/invalid-argument.exception';
-export { default as SubscriptionAlreadyExistsException } from './src/exception/subscription-already-exists.exception';
-export { default as SubscriptionNotFoundException } from './src/exception/subscription-not-found.exception';
+export { InvalidArgumentException, SubscriptionAlreadyExistsException, SubscriptionNotFoundException } from './src/exception/index';
 //# sourceMappingURL=index.d.ts.map

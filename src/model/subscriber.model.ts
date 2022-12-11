@@ -3,13 +3,12 @@ import type SubscriberInterface from "../interfaces/subscriber.interface";
 import type PublisherInterface from "../interfaces/publisher.interface";
 import type NotificationRecord from "../interfaces/notification-record.interface";
 import SubscriptionManager from "./subscription-manager.model";
-import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
 import {
     findSubscriptionByRoleAndComponentId,
     ROLE,
     DEFAULT_PRIORITY
 } from "../helper/subscription-manager.helper";
-import InvalidArgumentException from "../exception/invalid-argument.exception";
+import {InvalidArgumentException, SubscriptionNotFoundException} from "../exception/index";
 import {generateId} from "../helper/common.helper";
 
 /**

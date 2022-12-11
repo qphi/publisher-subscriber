@@ -6,7 +6,7 @@ import Subscriber from "./subscriber.model";
 import SubscriberInterface from "../interfaces/subscriber.interface";
 import NotificationRecord from "../interfaces/notification-record.interface";
 import {findSubscriptionByRoleAndComponentId, ROLE} from "../helper/subscription-manager.helper";
-import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
+import { SubscriptionNotFoundException } from "../exception/index";
 import PublisherProxyInterface from "../interfaces/publisher-proxy.interface";
 
 /**

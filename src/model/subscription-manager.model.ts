@@ -1,7 +1,7 @@
 import SubscriptionManagerInterface from "../interfaces/subscription-manager.interface";
 import SubscriptionInterface from "../interfaces/subscription.interface";
-import SubscriptionAlreadyExistsException from "../exception/subscription-already-exists.exception";
-import SubscriptionNotFoundException from "../exception/subscription-not-found.exception";
+import {SubscriptionAlreadyExistsException, SubscriptionNotFoundException} from "../exception/index";
+
 
 /**
  * Define instance that can manage subscription collection

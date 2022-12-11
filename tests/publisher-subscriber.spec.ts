@@ -3,16 +3,16 @@ import {expect} from 'chai';
 import PublisherSubscriber from "../src/model/publisher-subscriber.model";
 import Publisher from "../src/model/publisher.model";
 import Subscriber from "../src/model/subscriber.model";
-import SubscriptionAlreadyExistsException from "../src/exception/subscription-already-exists.exception";
+import { SubscriptionAlreadyExistsException, SubscriptionNotFoundException, InvalidArgumentException } from '../src/exception/index';
 import SubscriptionInterface from "../src/interfaces/subscription.interface";
-import SubscriptionNotFoundException from "../src/exception/subscription-not-found.exception";
+
 import {
     DEFAULT_PRIORITY,
     findSubscriptionByRoleAndComponentId,
     HIGH_PRIORITY,
     LOW_PRIORITY
 } from "../src/helper/subscription-manager.helper";
-import InvalidArgumentException from "../src/exception/invalid-argument.exception";
+
 import SubscriptionManager from "../src/model/subscription-manager.model";
 
 const Message = {

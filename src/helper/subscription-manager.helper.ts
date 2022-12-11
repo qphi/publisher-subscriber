@@ -1,5 +1,5 @@
 import SubscriptionManagerInterface from "../interfaces/subscription-manager.interface";
-import InvalidArgumentException from "../exception/invalid-argument.exception";
+import {InvalidArgumentException} from "../exception/index";
 import SubscriptionInterface from "../interfaces/subscription.interface";
 
 /**
